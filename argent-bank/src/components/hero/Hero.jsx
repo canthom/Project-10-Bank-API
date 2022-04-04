@@ -5,7 +5,7 @@ function Hero() {
   return (
     <StyledHero>
       <section>
-        <h2>Promoted Content</h2>
+        <h2 className="sr-only">Promoted Content</h2>
         <p>No fees.</p>
         <p>No minimum deposit.</p>
         <p>High interest rates.</p>
