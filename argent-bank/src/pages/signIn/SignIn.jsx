@@ -1,38 +1,46 @@
-import React from 'react';
+import React, { useState } from 'react';
 import StyledSignIn from './SignIn.styled';
-import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import LoginForm from './loginForm/LoginForm';
 
 function SignIn() {
+  const [user, setUser] = useState({ email: '' });
+  const [error, setError] = useState('');
+  console.log(user);
+
+  const Login = (details) => {
+    fetch('http://localhost:3001/api/v1/user/login', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+      },
+      body: JSON.stringify(details),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === 200) {
+          console.log(data.message);
+          setUser({
+            email: details.email,
+          });
+        } else if (data.status === 400) {
+          console.log(data.message);
+        }
+      });
+  };
+
+  const Logout = () => {
+    console.log('Logout');
+  };
+
   return (
     <StyledSignIn>
       <section>
         <FontAwesomeIcon icon={faCircleUser} />
         <h1>Sign In</h1>
 
-        <form>
-          <div>
-            <label htmlFor="username">Username</label>
-            <input autoComplete="username" type="text" id="username" />
-          </div>
-
-          <div>
-            <label htmlFor="password">Password</label>
-            <input
-              autoComplete="current-password"
-              type="password"
-              id="password"
-            />
-          </div>
-
-          <div>
-            <input type="checkbox" id="remember-me" />
-            <label htmlFor="remember-me">Remember me</label>
-          </div>
-
-          <Link to="/user">Sign In</Link>
-        </form>
+        <LoginForm Login={Login} Error={error} />
       </section>
     </StyledSignIn>
   );

@@ -16,7 +16,7 @@ const StyledSignIn = styled.main`
     font-size: 5rem;
   }
 
-  a {
+  input[type='submit'] {
     display: block;
     width: 100%;
     padding: 8px;
@@ -26,6 +26,7 @@ const StyledSignIn = styled.main`
     border-color: #00bc77;
     background-color: #00bc77;
     color: #fff;
+    cursor: pointer;
   }
 
   div:not(:last-of-type) {
