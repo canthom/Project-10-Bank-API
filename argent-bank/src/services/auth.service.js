@@ -1,7 +1,7 @@
 import axios from 'axios';
 const API_URL = 'http://localhost:3001/api/v1/user/login';
 
-const login = (email, password) => {
+const login = ({ email, password }) => {
   let config = {
     headers: {
       'Content-Type': 'application/json;charset=utf-8',
@@ -11,14 +11,11 @@ const login = (email, password) => {
     .post(
       API_URL,
       {
-        email: 'steve@rogers.com',
-        password: 'password456',
+        email: email,
+        password: password,
       },
       config
     )
-    .then((response) => {
-      console.log(response);
-    })
     .catch((error) => {
       console.log(error);
     });

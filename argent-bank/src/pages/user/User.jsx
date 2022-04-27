@@ -1,8 +1,19 @@
 import React from 'react';
 import StyledUser from './User.styled';
 import AccountWrapper from './accountWrapper/AccountWrapper';
+import store from '../../redux/store';
+import userInfoService from '../../services/userInfo.service';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function User() {
+  // if (userIsAuth === false) {
+  //   return <Navigate to="/sign-in" />;
+  // }
+
+  userInfoService.getUserInfo(store.getState().user.token).then((response) => {
+    console.log(response);
+  });
+
   return (
     <StyledUser>
       <header>

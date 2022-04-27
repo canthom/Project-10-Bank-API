@@ -6,9 +6,16 @@ const StyledHeader = styled.nav`
   align-items: center;
   padding: 5px 20px;
 
-  a {
+  a,
+  button {
     font-weight: bold;
     color: #2c3e50;
+  }
+
+  button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
   }
 
   // .main-nav a.router-link-exact-active {
