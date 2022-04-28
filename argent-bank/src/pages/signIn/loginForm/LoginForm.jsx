@@ -16,7 +16,6 @@ function LoginForm({ Login, error }) {
           type="text"
           id="username"
           onChange={(e) => setDetails({ ...details, email: e.target.value })}
-          // value={details.username}
         />
       </div>
 

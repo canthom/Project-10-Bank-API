@@ -7,19 +7,20 @@ import authService from '../../services/auth.service';
 import { useDispatch } from 'react-redux';
 import { login } from '../../redux/userSlice';
 import store from '../../redux/store';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 function SignIn() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const Login = (details) => {
     authService.login(details).then((response) => {
       if (response.data.status === 200) {
         const userInfo = {
-          email: details.email,
           token: response.data.body.token,
         };
         dispatch(login(userInfo));
+        navigate('/user', { replace: true });
       }
     });
   };

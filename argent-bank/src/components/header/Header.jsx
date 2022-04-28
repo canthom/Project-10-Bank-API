@@ -17,6 +17,7 @@ function Header() {
 
   const Logout = () => {
     dispatch(logout());
+    navigate('/', { replace: true });
   };
 
   const Navigate = () => {
@@ -38,7 +39,7 @@ function Header() {
           <>
             <button onClick={Navigate}>
               <FontAwesomeIcon icon={faCircleUser} />
-              Tony
+              {store.getState().user.firstName}
             </button>
             <button onClick={Logout}>
               <FontAwesomeIcon icon={faRightFromBracket} />

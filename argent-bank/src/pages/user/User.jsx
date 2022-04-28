@@ -1,27 +1,80 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import StyledUser from './User.styled';
 import AccountWrapper from './accountWrapper/AccountWrapper';
+import EditName from './editName/EditName';
 import store from '../../redux/store';
 import userInfoService from '../../services/userInfo.service';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { getProfile } from '../../redux/userSlice';
+import { Navigate } from 'react-router-dom';
 
 function User() {
-  // if (userIsAuth === false) {
-  //   return <Navigate to="/sign-in" />;
-  // }
+  const [isEditActive, setIsEditActive] = useState(false);
+  const dispatch = useDispatch();
+  const userIsAuth = store.getState().user.isAuth === true;
 
-  userInfoService.getUserInfo(store.getState().user.token).then((response) => {
-    console.log(response);
+  useEffect(() => {
+    // Récupération du NOM ET PRENOM
+    userInfoService
+      .getUserInfo(store.getState().user.token)
+      .then((response) => {
+        if (response.data.status === 200) {
+          const userInfo = {
+            email: response.data.body.email,
+            firstName: response.data.body.firstName,
+            lastName: response.data.body.lastName,
+          };
+          dispatch(getProfile(userInfo));
+        }
+      });
   });
 
-  return (
+  // Edition du NOM ET PRENOM
+  const SaveChanges = (details) => {
+    userInfoService
+      .editUserInfo(
+        store.getState().user.token,
+        details.firstName,
+        details.lastName
+      )
+      .then((response) => {
+        if (response.data.status === 200) {
+          const userInfo = {
+            firstName: response.data.body.firstName,
+            lastName: response.data.body.lastName,
+          };
+          dispatch(getProfile(userInfo));
+        }
+      });
+  };
+
+  // Afficher l'édition du NOM ET PRENOM
+  const toggleEditName = () => {
+    setIsEditActive((prevState) => !prevState);
+  };
+
+  return userIsAuth ? (
     <StyledUser>
       <header>
-        <h1>
-          Welcome back <br />
-          Tony Jarvis!
-        </h1>
-        <button>Edit Name</button>
+        {isEditActive ? (
+          <>
+            <h1>
+              Welcome back <br />
+            </h1>
+            <EditName SaveChanges={SaveChanges} toggleEdit={toggleEditName} />
+          </>
+        ) : (
+          <>
+            <h1>
+              Welcome back <br />
+              {store.getState().user.firstName +
+                ' ' +
+                store.getState().user.lastName}{' '}
+              !
+            </h1>
+            <button onClick={toggleEditName}>Edit Name</button>
+          </>
+        )}
       </header>
       <h2 className="sr-only">Accounts</h2>
 
@@ -59,6 +112,8 @@ function User() {
         </div>
       </AccountWrapper>
     </StyledUser>
+  ) : (
+    <Navigate to="/" />
   );
 }
 
