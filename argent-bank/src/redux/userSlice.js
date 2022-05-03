@@ -20,9 +20,7 @@ export const userSlice = createSlice({
       }
     },
     logout: (state) => {
-      state.email = '';
-      state.token = '';
-      state.isAuth = false;
+      return initialState;
     },
     getProfile: (state, action) => {
       state.email = action.payload.email;
