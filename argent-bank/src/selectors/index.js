@@ -13,3 +13,7 @@ export function isAuthSelector(state) {
 export function tokenSelector(state) {
   return state.user.token;
 }
+
+export function isLoadingSelector(state) {
+  return state.user.isLoading;
+}

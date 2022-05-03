@@ -49,6 +49,9 @@ function User() {
                 lastName: response.data.body.lastName,
               };
               dispatch(getProfile(userInfo));
+
+              // LOCAL STORAGE
+              localStorage.setItem('firstName', response.data.body.firstName);
             }
           });
         }

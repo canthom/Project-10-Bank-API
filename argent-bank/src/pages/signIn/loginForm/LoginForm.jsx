@@ -1,6 +1,9 @@
 import React, { useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { isLoadingSelector } from '../../../selectors';
 
 function LoginForm({ Login }) {
+  const isLoading = useSelector(isLoadingSelector);
   const [details, setDetails] = useState({ email: '', password: '' });
   const submitHandler = (e) => {
     e.preventDefault();
@@ -40,7 +43,11 @@ function LoginForm({ Login }) {
         <label htmlFor="remember-me">Remember me</label>
       </div>
 
-      <input type="submit" value="Sign In" />
+      <input
+        type="submit"
+        value="Sign In"
+        disabled={isLoading ? true : false}
+      />
     </form>
   );
 }
