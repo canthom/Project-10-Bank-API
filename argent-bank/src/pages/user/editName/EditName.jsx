@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import StyledEditName from './EditName.styled';
-import store from '../../../redux/store';
+import { firstNameSelector, lastNameSelector } from '../../../selectors';
 
 function EditName({ SaveChanges, toggleEdit }) {
-  const [details, setDetails] = useState({
-    firstName: '',
-    lastName: '',
-  });
+  const firstNameInput = useRef();
+  const lastNameInput = useRef();
+  const firstName = useSelector(firstNameSelector);
+  const lastName = useSelector(lastNameSelector);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    SaveChanges(details);
+    SaveChanges({
+      firstName: firstNameInput.current.value,
+      lastName: lastNameInput.current.value,
+    });
     toggleEdit();
   };
 
@@ -21,16 +25,8 @@ function EditName({ SaveChanges, toggleEdit }) {
 
   return (
     <StyledEditName>
-      <input
-        type="text"
-        onChange={(e) => setDetails({ ...details, firstName: e.target.value })}
-        defaultValue={store.getState().user.firstName}
-      />
-      <input
-        type="text"
-        onChange={(e) => setDetails({ ...details, lastName: e.target.value })}
-        defaultValue={store.getState().user.lastName}
-      />
+      <input type="text" ref={firstNameInput} defaultValue={firstName} />
+      <input type="text" ref={lastNameInput} defaultValue={lastName} />
       <input type="submit" onClick={submitHandler} value="Save" />
       <button onClick={handleCancel}>Cancel</button>
     </StyledEditName>

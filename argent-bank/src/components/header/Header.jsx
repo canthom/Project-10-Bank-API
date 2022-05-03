@@ -8,12 +8,15 @@ import {
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
 import store from '../../redux/store';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/userSlice';
+import { firstNameSelector, isAuthSelector } from '../../selectors';
 
 function Header() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const firstName = useSelector(firstNameSelector);
+  const isAuth = useSelector(isAuthSelector);
 
   const Logout = () => {
     dispatch(logout());
@@ -30,7 +33,7 @@ function Header() {
         <img src={logo} alt="Argent Bank Logo" />
       </Link>
       <div>
-        {store.getState().user.isAuth === false ? (
+        {isAuth === false ? (
           <NavLink to="sign-in">
             <FontAwesomeIcon icon={faCircleUser} />
             Sign In
@@ -39,7 +42,7 @@ function Header() {
           <>
             <button onClick={Navigate}>
               <FontAwesomeIcon icon={faCircleUser} />
-              {store.getState().user.firstName}
+              {firstName}
             </button>
             <button onClick={Logout}>
               <FontAwesomeIcon icon={faRightFromBracket} />

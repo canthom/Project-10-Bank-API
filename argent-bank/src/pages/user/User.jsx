@@ -2,41 +2,43 @@ import React, { useEffect, useState } from 'react';
 import StyledUser from './User.styled';
 import AccountWrapper from './accountWrapper/AccountWrapper';
 import EditName from './editName/EditName';
-import store from '../../redux/store';
 import userInfoService from '../../services/userInfo.service';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../../redux/userSlice';
 import { Navigate } from 'react-router-dom';
+import {
+  firstNameSelector,
+  lastNameSelector,
+  isAuthSelector,
+  tokenSelector,
+} from '../../selectors';
 
 function User() {
   const [isEditActive, setIsEditActive] = useState(false);
   const dispatch = useDispatch();
-  const userIsAuth = store.getState().user.isAuth === true;
+  const userIsAuth = useSelector(isAuthSelector) === true;
+  const firstName = useSelector(firstNameSelector);
+  const lastName = useSelector(lastNameSelector);
+  const token = useSelector(tokenSelector);
 
   useEffect(() => {
     // Récupération du NOM ET PRENOM
-    userInfoService
-      .getUserInfo(store.getState().user.token)
-      .then((response) => {
-        if (response.data.status === 200) {
-          const userInfo = {
-            email: response.data.body.email,
-            firstName: response.data.body.firstName,
-            lastName: response.data.body.lastName,
-          };
-          dispatch(getProfile(userInfo));
-        }
-      });
-  });
+    userInfoService.getUserInfo(token).then((response) => {
+      if (response.data.status === 200) {
+        const userInfo = {
+          email: response.data.body.email,
+          firstName: response.data.body.firstName,
+          lastName: response.data.body.lastName,
+        };
+        dispatch(getProfile(userInfo));
+      }
+    });
+  }, []);
 
   // Edition du NOM ET PRENOM
   const SaveChanges = (details) => {
     userInfoService
-      .editUserInfo(
-        store.getState().user.token,
-        details.firstName,
-        details.lastName
-      )
+      .editUserInfo(token, details.firstName, details.lastName)
       .then((response) => {
         if (response.data.status === 200) {
           const userInfo = {
@@ -67,9 +69,10 @@ function User() {
           <>
             <h1>
               Welcome back <br />
-              {store.getState().user.firstName +
+              {firstName + ' ' + lastName}
+              {/* {store.getState().user.firstName +
                 ' ' +
-                store.getState().user.lastName}{' '}
+                store.getState().user.lastName}{' '} */}
               !
             </h1>
             <button onClick={toggleEditName}>Edit Name</button>

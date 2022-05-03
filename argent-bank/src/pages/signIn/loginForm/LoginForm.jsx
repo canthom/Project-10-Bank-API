@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 
-function LoginForm({ Login, error }) {
+function LoginForm({ Login }) {
   const [details, setDetails] = useState({ email: '', password: '' });
   const submitHandler = (e) => {
     e.preventDefault();
 
     Login(details);
   };
+
+  const pwdHandler = useCallback(
+    (e) => setDetails({ ...details, password: e.target.value }),
+    [details]
+  );
+
   return (
     <form onSubmit={submitHandler}>
       <div>
@@ -25,7 +31,7 @@ function LoginForm({ Login, error }) {
           autoComplete="current-password"
           type="password"
           id="password"
-          onChange={(e) => setDetails({ ...details, password: e.target.value })}
+          onChange={pwdHandler}
         />
       </div>
 
