@@ -7,7 +7,6 @@ import {
   faCircleUser,
   faRightFromBracket,
 } from '@fortawesome/free-solid-svg-icons';
-import store from '../../redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../redux/userSlice';
 import { firstNameSelector, isAuthSelector } from '../../selectors';

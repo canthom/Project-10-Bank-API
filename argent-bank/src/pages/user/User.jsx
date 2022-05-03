@@ -41,11 +41,16 @@ function User() {
       .editUserInfo(token, details.firstName, details.lastName)
       .then((response) => {
         if (response.data.status === 200) {
-          const userInfo = {
-            firstName: response.data.body.firstName,
-            lastName: response.data.body.lastName,
-          };
-          dispatch(getProfile(userInfo));
+          userInfoService.getUserInfo(token).then((response) => {
+            if (response.data.status === 200) {
+              const userInfo = {
+                email: response.data.body.email,
+                firstName: response.data.body.firstName,
+                lastName: response.data.body.lastName,
+              };
+              dispatch(getProfile(userInfo));
+            }
+          });
         }
       });
   };
@@ -69,11 +74,7 @@ function User() {
           <>
             <h1>
               Welcome back <br />
-              {firstName + ' ' + lastName}
-              {/* {store.getState().user.firstName +
-                ' ' +
-                store.getState().user.lastName}{' '} */}
-              !
+              {firstName + ' ' + lastName}!
             </h1>
             <button onClick={toggleEditName}>Edit Name</button>
           </>
