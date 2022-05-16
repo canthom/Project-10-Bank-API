@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledEditName = styled.form`
-  width: 25%;
+  width: 20%;
   margin: 0 auto;
   display: flex;
   justify-content: center;

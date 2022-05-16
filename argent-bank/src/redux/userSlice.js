@@ -23,7 +23,7 @@ export const userSlice = createSlice({
         state.isAuth = true;
       }
     },
-    logout: (state, action) => {
+    logout: () => {
       localStorage.clear();
       return initialState;
     },

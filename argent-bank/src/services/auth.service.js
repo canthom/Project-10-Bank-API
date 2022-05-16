@@ -7,18 +7,14 @@ const login = ({ email, password }) => {
       'Content-Type': 'application/json;charset=utf-8',
     },
   };
-  return axios
-    .post(
-      API_URL,
-      {
-        email: email,
-        password: password,
-      },
-      config
-    )
-    .catch((error) => {
-      console.log(error);
-    });
+  return axios.post(
+    API_URL,
+    {
+      email: email,
+      password: password,
+    },
+    config
+  );
 };
 
 const authService = {

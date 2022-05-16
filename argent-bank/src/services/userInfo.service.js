@@ -1,9 +1,12 @@
 import axios from 'axios';
+import store from '../redux/store';
 
 const API_URL = 'http://localhost:3001/api/v1/user/profile';
 
 //Récupération du NOM ET PRENOM
-const getUserInfo = (token) => {
+const getUserInfo = () => {
+  const token = store.getState().user.token;
+
   const config = {
     headers: {
       Authorization: 'Bearer ' + token,
@@ -21,7 +24,9 @@ const getUserInfo = (token) => {
 };
 
 // Edition du NOM ET PRENOM
-const editUserInfo = (token, firstName, lastName) => {
+const editUserInfo = (firstName, lastName) => {
+  const token = store.getState().user.token;
+
   const config = {
     headers: {
       Authorization: 'Bearer ' + token,

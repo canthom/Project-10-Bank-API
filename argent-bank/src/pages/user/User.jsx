@@ -5,25 +5,17 @@ import EditName from './editName/EditName';
 import userInfoService from '../../services/userInfo.service';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfile } from '../../redux/userSlice';
-import { Navigate } from 'react-router-dom';
-import {
-  firstNameSelector,
-  lastNameSelector,
-  isAuthSelector,
-  tokenSelector,
-} from '../../selectors';
+import { firstNameSelector, lastNameSelector } from '../../selectors';
 
 function User() {
   const [isEditActive, setIsEditActive] = useState(false);
   const dispatch = useDispatch();
-  const userIsAuth = useSelector(isAuthSelector) === true;
   const firstName = useSelector(firstNameSelector);
   const lastName = useSelector(lastNameSelector);
-  const token = useSelector(tokenSelector);
 
   useEffect(() => {
     // Récupération du NOM ET PRENOM
-    userInfoService.getUserInfo(token).then((response) => {
+    userInfoService.getUserInfo().then((response) => {
       if (response.data.status === 200) {
         const userInfo = {
           email: response.data.body.email,
@@ -31,6 +23,9 @@ function User() {
           lastName: response.data.body.lastName,
         };
         dispatch(getProfile(userInfo));
+
+        // LOCAL STORAGE
+        localStorage.setItem('firstName', response.data.body.firstName);
       }
     });
   }, []);
@@ -38,10 +33,10 @@ function User() {
   // Edition du NOM ET PRENOM
   const SaveChanges = (details) => {
     userInfoService
-      .editUserInfo(token, details.firstName, details.lastName)
+      .editUserInfo(details.firstName, details.lastName)
       .then((response) => {
         if (response.data.status === 200) {
-          userInfoService.getUserInfo(token).then((response) => {
+          userInfoService.getUserInfo().then((response) => {
             if (response.data.status === 200) {
               const userInfo = {
                 email: response.data.body.email,
@@ -63,7 +58,7 @@ function User() {
     setIsEditActive((prevState) => !prevState);
   };
 
-  return userIsAuth ? (
+  return (
     <StyledUser>
       <header>
         {isEditActive ? (
@@ -119,8 +114,6 @@ function User() {
         </div>
       </AccountWrapper>
     </StyledUser>
-  ) : (
-    <Navigate to="/" />
   );
 }
 

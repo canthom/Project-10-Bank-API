@@ -3,6 +3,10 @@ import styled from 'styled-components';
 const StyledSignIn = styled.main`
   background-color: #12002b;
 
+  p {
+    color: red;
+  }
+
   section {
     box-sizing: border-box;
     background-color: white;
