@@ -5,7 +5,7 @@ import { isLoadingSelector } from '../../../selectors';
 import authService from '../../../services/auth.service';
 import { login, loading } from '../../../redux/userSlice';
 
-function LoginForm({}) {
+function LoginForm() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isLoading = useSelector(isLoadingSelector);
